@@ -104,7 +104,7 @@
                                         v-model="user.selected_role"
                                         :items="user.roles"
                                         item-text="role_name"
-                                        item-value="value"
+                                        item-value="id"
                                         label="Roles"
                                         outlined
                                         return-object
@@ -186,11 +186,8 @@
                     email: '',
                     password: '',
                     conf_pass: '',
-                    selected_role: {role_name: 'Admin', value: '1'},
-                    roles: [
-                        { role_name: 'Admin', value: '1' },
-                        { role_name: 'User', value: '2' }
-                    ]
+                    selected_role: {role_name: 'Admin', id: '1'},
+                    roles: []
                 },
                 snackbar: {
                     show: false,
@@ -202,6 +199,7 @@
 
         created() {
             this.init_table();
+            this.getRoles();
         },
 
         computed: {
@@ -280,7 +278,7 @@
                                     full_name: this.user.name,
                                     email: this.user.email,
                                     password: this.user.password,
-                                    role: this.user.selected_role.value
+                                    role: this.user.selected_role.id
                                 }
                             })
                             .then(res => {
@@ -298,7 +296,7 @@
                                 full_name: this.user.name,
                                 email: this.user.email,
                                 password: this.user.password,
-                                role: this.user.selected_role.value
+                                role: this.user.selected_role.id
                             })
                             .then(res => {
                                 if (res.data.statusCode == 200) {
@@ -322,6 +320,14 @@
                     this.snackbar.text = 'Password is too short!';
                     this.snackbar.timeout = 1600;
                 }
+            },
+
+            async getRoles() {
+                this.$http.get(this.$dir + '/api/role/getRoles')
+                .then(res => {
+                    this.user.roles = res.data
+                })
+                .catch(err => { console.log(data); });
             }
         }
     }

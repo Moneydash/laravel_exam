@@ -62,11 +62,8 @@ export default {
                 email: '',
                 password: '',
                 conf_pass: '',
-                selected_role: { role_name: 'Admin', value: '1' },
-                roles: [
-                    { role_name: 'Admin', value: '1' },
-                    { role_name: 'User', value: '2' }
-                ],
+                selected_role: { role_name: 'Admin', id: '1' },
+                roles: [],
             },
             snackbar: {
                 show: false,
@@ -74,6 +71,10 @@ export default {
                 timeout: -1
             }
         }
+    },
+
+    created() {
+        this.getRoles();
     },
 
     methods: {
@@ -86,7 +87,7 @@ export default {
                             full_name: this.user_info.full_name,
                             email: this.user_info.email,
                             password: this.user_info.password,
-                            role: this.user_info.selected_role
+                            role: this.user_info.selected_role.id
                         },
                         url: this.$dir + '/api/user/register'
                     })
@@ -117,6 +118,14 @@ export default {
                 this.snackbar.text = 'Password is too short!';
                 this.snackbar.timeout = 1600;
             }
+        },
+
+        async getRoles() {
+            this.$http.get(this.$dir + '/api/role/getRoles')
+            .then(res => {
+                this.user_info.roles = res.data
+            })
+            .catch(err => { console.log(data); });
         }
     }
 }
