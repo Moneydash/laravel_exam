@@ -185,7 +185,7 @@
             },
             
             async deleteRoleConfirm() {
-                this.$http.delete(this.$dir + '/api/user/deleteRole/' + this.role.id)
+                this.$http.delete(this.$dir + '/api/role/deleteRole/' + this.role.id)
                 .then(res => {
                     if (res.data.statusCode == 200) {
                         this.snackbar.show = true;
